@@ -1,0 +1,5 @@
+<resources>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="radius_corner">10dp</dimen>
+    <dimen name="elevation">5dp</dimen>
+</resources>
