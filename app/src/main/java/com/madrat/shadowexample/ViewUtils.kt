@@ -1,76 +1,96 @@
-package com.madrat.shadowexample;
+package com.madrat.shadowexample
 
-import static android.view.View.LAYER_TYPE_SOFTWARE;
+import android.graphics.Paint
+import android.graphics.Rect
+import androidx.annotation.ColorRes
+import androidx.annotation.DimenRes
+import android.graphics.drawable.Drawable
+import androidx.core.content.ContextCompat
+import android.view.Gravity
+import android.graphics.drawable.ShapeDrawable
+import android.graphics.drawable.shapes.OvalShape
+import android.graphics.drawable.LayerDrawable
+import android.view.View
 
-import android.graphics.Paint;
-import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.OvalShape;
-import android.view.Gravity;
-import android.view.View;
-
-import androidx.annotation.ColorRes;
-import androidx.annotation.DimenRes;
-import androidx.core.content.ContextCompat;
-
-public class ViewUtils {
-    public static Drawable generateBackgroundWithShadow(
-        View view,
-        @ColorRes int backgroundColor,
-        @DimenRes int cornerRadius,
-        @ColorRes int shadowColor,
-        @DimenRes int elevation,
-        int shadowGravity
-    ) {
-        float cornerRadiusValue = view.getContext().getResources().getDimension(cornerRadius);
-        int elevationValue = (int) view.getContext().getResources().getDimension(elevation);
-        int shadowColorValue = ContextCompat.getColor(view.getContext(),shadowColor);
-        int backgroundColorValue = ContextCompat.getColor(view.getContext(),backgroundColor);
-    
-        Paint backgroundPaint = new Paint();
-        backgroundPaint.setStyle(Paint.Style.FILL);
-        backgroundPaint.setShadowLayer(cornerRadiusValue, 0, 0, 0);
+object ViewUtils {
+    @JvmStatic
+    fun generateBackgroundWithShadow(
+        view: View,
+        @ColorRes backgroundColor: Int,
+        @DimenRes cornerRadius: Int,
+        @ColorRes shadowColor: Int,
+        @DimenRes elevation: Int,
+        shadowGravity: Int
+    ): Drawable {
+        val cornerRadiusValue = view.context.resources.getDimension(cornerRadius)
+        val elevationValue = view.context.resources.getDimension(elevation)
+            .toInt()
+        val shadowColorValue = ContextCompat.getColor(
+            view.context,
+            shadowColor
+        )
+        val backgroundColorValue = ContextCompat.getColor(
+            view.context,
+            backgroundColor
+        )
         
-        Rect shapeDrawablePadding = new Rect();
-        shapeDrawablePadding.left = elevationValue;
-        shapeDrawablePadding.right = elevationValue;
-        
-        int DY;
-        switch (shadowGravity) {
-            case Gravity.CENTER:
-                shapeDrawablePadding.top = elevationValue;
-                shapeDrawablePadding.bottom = elevationValue;
-                DY = 0;
-                break;
-            case Gravity.TOP:
-                shapeDrawablePadding.top = elevationValue*2;
-                shapeDrawablePadding.bottom = elevationValue;
-                DY = -1*elevationValue/3;
-                break;
-            default:
-            case Gravity.BOTTOM:
-                shapeDrawablePadding.top = elevationValue;
-                shapeDrawablePadding.bottom = elevationValue*2;
-                DY = elevationValue/3;
-                break;
+        Paint().apply {
+            style = Paint.Style.FILL
+            setShadowLayer(cornerRadiusValue, 0f, 0f, 0)
         }
         
-        ShapeDrawable shapeDrawable = new ShapeDrawable();
-        shapeDrawable.setPadding(shapeDrawablePadding);
+        val shapeDrawablePadding = Rect().apply {
+            left = elevationValue
+            right = elevationValue
+        }
         
-        shapeDrawable.getPaint().setColor(backgroundColorValue);
-        shapeDrawable.getPaint().setShadowLayer(cornerRadiusValue, 0, DY, shadowColorValue);
+        val yCoordinate: Int
+        when (shadowGravity) {
+            Gravity.CENTER -> {
+                shapeDrawablePadding.top = elevationValue
+                shapeDrawablePadding.bottom = elevationValue
+                yCoordinate = 0
+            }
+            Gravity.TOP -> {
+                shapeDrawablePadding.top = elevationValue * 2
+                shapeDrawablePadding.bottom = elevationValue
+                yCoordinate = -1 * elevationValue / 3
+            }
+            Gravity.BOTTOM -> {
+                shapeDrawablePadding.top = elevationValue
+                shapeDrawablePadding.bottom = elevationValue * 2
+                yCoordinate = elevationValue / 3
+            }
+            else -> {
+                shapeDrawablePadding.top = elevationValue
+                shapeDrawablePadding.bottom = elevationValue * 2
+                yCoordinate = elevationValue / 3
+            }
+        }
         
-        view.setLayerType(LAYER_TYPE_SOFTWARE, shapeDrawable.getPaint());
+        val shapeDrawable = ShapeDrawable()
+        shapeDrawable.setPadding(shapeDrawablePadding)
         
-        shapeDrawable.setShape(new OvalShape());
+        shapeDrawable.paint.color = backgroundColorValue
+        shapeDrawable.paint.setShadowLayer(
+            cornerRadiusValue / 1.5f,
+            0f,
+            yCoordinate.toFloat(),
+            shadowColorValue
+        )
         
-        LayerDrawable drawable = new LayerDrawable(new Drawable[]{shapeDrawable});
-        drawable.setLayerInset(0, elevationValue, elevationValue*2, elevationValue, elevationValue*2);
+        view.setLayerType(View.LAYER_TYPE_SOFTWARE, shapeDrawable.paint)
         
-        return drawable;
+        shapeDrawable.shape = OvalShape()
         
+        val drawable = LayerDrawable(arrayOf<Drawable>(shapeDrawable))
+        drawable.setLayerInset(
+            0,
+            elevationValue,
+            elevationValue * 2,
+            elevationValue,
+            elevationValue * 2
+        )
+        return drawable
     }
 }

@@ -37,16 +37,16 @@
         android:layout_height="wrap_content"
         app:layout_constraintGuide_percent="0.75" />
 
-
-    <com.madrat.shadowexample.RoundLinerLayoutNormal
-        android:orientation="vertical"
+    <fragment
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:id="@+id/map"
+        tools:context=".MapsActivity"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/top_guideline"
-        app:layout_constraintBottom_toTopOf="@id/bottom_guideline">
-    </com.madrat.shadowexample.RoundLinerLayoutNormal>
+        app:layout_constraintBottom_toTopOf="@id/bottom_guideline"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

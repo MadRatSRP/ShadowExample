@@ -1,47 +1,37 @@
-package com.madrat.shadowexample;
+package com.madrat.shadowexample
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.NavHostFragment
+import com.madrat.shadowexample.databinding.FragmentFirstBinding
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
-
-import com.madrat.shadowexample.databinding.FragmentFirstBinding;
-
-public class FirstFragment extends Fragment {
+class FirstFragment : Fragment() {
+    private var nullableBinding: FragmentFirstBinding? = null
+    private val binding get() = nullableBinding!!
     
-    private FragmentFirstBinding binding;
-    
-    @Override
-    public View onCreateView(
-        LayoutInflater inflater, ViewGroup container,
-        Bundle savedInstanceState
-    ) {
-        
-        binding = FragmentFirstBinding.inflate(inflater, container, false);
-        return binding.getRoot();
-        
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        nullableBinding = FragmentFirstBinding.inflate(inflater, container, false)
+        return binding.root
     }
     
-    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        
-        binding.buttonFirst.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                NavHostFragment.findNavController(FirstFragment.this)
-                    .navigate(R.id.action_FirstFragment_to_SecondFragment);
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        with(binding) {
+            binding.buttonFirst.setOnClickListener {
+                NavHostFragment.findNavController(this@FirstFragment)
+                    .navigate(R.id.action_FirstFragment_to_SecondFragment)
             }
-        });
+        }
     }
     
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
+    override fun onDestroyView() {
+        super.onDestroyView()
+        nullableBinding = null
     }
-    
 }
