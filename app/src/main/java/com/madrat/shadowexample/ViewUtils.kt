@@ -1,5 +1,6 @@
 package com.madrat.shadowexample
 
+import android.content.Context
 import android.graphics.Paint
 import android.graphics.Rect
 import androidx.annotation.ColorRes
@@ -15,22 +16,22 @@ import android.view.View
 object ViewUtils {
     @JvmStatic
     fun generateBackgroundWithShadow(
-        view: View,
+        context: Context,
         @ColorRes backgroundColor: Int,
         @DimenRes cornerRadius: Int,
         @ColorRes shadowColor: Int,
         @DimenRes elevation: Int,
         shadowGravity: Int
     ): Drawable {
-        val cornerRadiusValue = view.context.resources.getDimension(cornerRadius)
-        val elevationValue = view.context.resources.getDimension(elevation)
+        val cornerRadiusValue = context.resources.getDimension(cornerRadius)
+        val elevationValue = context.resources.getDimension(elevation)
             .toInt()
         val shadowColorValue = ContextCompat.getColor(
-            view.context,
+            context,
             shadowColor
         )
         val backgroundColorValue = ContextCompat.getColor(
-            view.context,
+            context,
             backgroundColor
         )
         
@@ -73,13 +74,13 @@ object ViewUtils {
         
         shapeDrawable.paint.color = backgroundColorValue
         shapeDrawable.paint.setShadowLayer(
-            cornerRadiusValue / 1.5f,
+            cornerRadiusValue / 3f,
             0f,
             yCoordinate.toFloat(),
             shadowColorValue
         )
-        
-        view.setLayerType(View.LAYER_TYPE_SOFTWARE, shapeDrawable.paint)
+    
+        shapeDrawable.paint
         
         shapeDrawable.shape = OvalShape()
         

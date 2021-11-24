@@ -1,9 +1,14 @@
 package com.madrat.shadowexample
 
+import android.content.res.Resources
+import android.graphics.Bitmap
+import android.graphics.Rect
 import android.os.Bundle
+import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.graphics.drawable.toBitmap
 import androidx.navigation.Navigation
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
@@ -13,10 +18,15 @@ import com.google.android.gms.maps.OnMapReadyCallback
 
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 
 import com.google.android.gms.maps.model.MarkerOptions
 
 import com.google.android.gms.maps.model.LatLng
+import android.util.DisplayMetrics
+import android.widget.LinearLayout
+import kotlin.math.roundToInt
+
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private val appBarConfiguration: AppBarConfiguration? = null
@@ -59,8 +69,30 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             || super.onSupportNavigateUp())
     }
     
+    private fun calculateDialogImageSideSize(percentFromHeight: Int): Int {
+        val percentHeight = percentFromHeight.toFloat() / 100
+        val displayMetrics = Resources.getSystem().displayMetrics
+        val rect = displayMetrics.run { Rect(0, 0, widthPixels, heightPixels) }
+        val finalHeight = rect.height() * percentHeight
+        return finalHeight.toInt()
+    }
+    
     override fun onMapReady(map: GoogleMap) {
         this.googleMap = map
+        
+        val markerWidth = calculateDialogImageSideSize(4)
+        
+        val markerDrawable = ViewUtils.generateBackgroundWithShadow(
+            this,
+            R.color.redka,
+            R.dimen.radius_corner,
+            R.color.black_40,
+            R.dimen.elevation,
+            Gravity.BOTTOM
+        ).toBitmap(
+            markerWidth,
+            (markerWidth + (markerWidth / 3.5)).toInt()
+        )
         
         googleMap?.let {
             // Add a marker in Sydney and move the camera
@@ -72,6 +104,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 MarkerOptions()
                     .position(sydney)
                     .title("Marker in Sydney")
+                    .icon(
+                        BitmapDescriptorFactory.fromBitmap(
+                            markerDrawable
+                        )
+                    )
             )
             it.moveCamera(CameraUpdateFactory.newLatLng(sydney))
         }

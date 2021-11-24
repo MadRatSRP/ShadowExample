@@ -28,7 +28,7 @@ class RoundLinerLayoutNormal : LinearLayout {
     
     private fun initBackground() {
         background = generateBackgroundWithShadow(
-            this,
+            this.context,
             R.color.white,
             R.dimen.radius_corner,
             android.R.color.darker_gray,
