@@ -1,34 +1,18 @@
 package com.madrat.shadowexample
 
 import android.content.res.Resources
-import android.graphics.Bitmap
 import android.graphics.Rect
 import android.os.Bundle
-import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.graphics.drawable.toBitmap
 import androidx.navigation.Navigation
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
-import com.madrat.shadowexample.databinding.ActivityMainBinding
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
+import com.madrat.shadowexample.databinding.ActivityMainBinding
 
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-
-import com.google.android.gms.maps.model.MarkerOptions
-
-import com.google.android.gms.maps.model.LatLng
-import android.util.DisplayMetrics
-import android.widget.LinearLayout
-import kotlin.math.roundToInt
-
-
-class MainActivity : AppCompatActivity(), OnMapReadyCallback {
+class MainActivity : AppCompatActivity()/*, OnMapReadyCallback*/ {
     private val appBarConfiguration: AppBarConfiguration? = null
     private lateinit var binding: ActivityMainBinding
     private var googleMap: GoogleMap? = null
@@ -38,9 +22,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
-        val mapFragment = supportFragmentManager
+        /*val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment?
-        mapFragment!!.getMapAsync(this)
+        mapFragment!!.getMapAsync(this)*/
     }
     
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -77,7 +61,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         return finalHeight.toInt()
     }
     
-    override fun onMapReady(map: GoogleMap) {
+    /*override fun onMapReady(map: GoogleMap) {
         this.googleMap = map
         
         val markerWidth = calculateDialogImageSideSize(4)
@@ -112,5 +96,5 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             )
             it.moveCamera(CameraUpdateFactory.newLatLng(sydney))
         }
-    }
+    }*/
 }

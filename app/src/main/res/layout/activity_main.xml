@@ -24,12 +24,12 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <fragment
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/map"
-        tools:context=".MapsActivity"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
+    <ImageView
+        android:id="@+id/image_view"
+        android:src="@drawable/ic_ellipse_21"
+        android:background="@color/black_40"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
