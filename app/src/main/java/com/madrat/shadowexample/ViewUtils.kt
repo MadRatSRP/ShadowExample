@@ -79,7 +79,7 @@ object ViewUtils {
             yCoordinate.toFloat(),
             shadowColorValue
         )
-    
+        
         shapeDrawable.paint
         
         shapeDrawable.shape = OvalShape()
